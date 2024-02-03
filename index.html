@@ -35,6 +35,7 @@
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
 <button onclick="startVoiceRecognition()">Έναρξη Φωνητικής Εντολής</button>
+<audio id="startSound" src="start-sound.mp3"></audio>
 
     
         <label for="datepicker">Επιλέξτε ημερομηνία:</label>
@@ -151,12 +152,16 @@
 
 <script src="script.js"></script>
 <script>
-let recognition;
-
 function startVoiceRecognition() {
     if (recognition && recognition.running) {
         console.log("Recognition already in progress.");
         return;
+    }
+
+    // Αναπαραγωγή ήχου εκκίνησης
+    const startSound = document.getElementById('startSound');
+    if (startSound) {
+        startSound.play();
     }
 
     recognition = new webkitSpeechRecognition() || new SpeechRecognition();
@@ -179,6 +184,7 @@ function startVoiceRecognition() {
     recognition.start();
     recognition.running = true;
 }
+
 
 
 
