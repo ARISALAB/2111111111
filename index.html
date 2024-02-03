@@ -190,7 +190,9 @@ let recognition;
 
 function startVoiceRecognition() {
     if (recognition && recognition.running) {
-        console.log("Recognition already in progress.");
+        recognition.stop();
+        document.querySelector('.microphone-icon').classList.remove('active');
+        console.log("Recognition stopped.");
         return;
     }
 
@@ -217,6 +219,9 @@ function startVoiceRecognition() {
     // Ενεργοποίηση του εικονιδίου μικροφώνου
     document.querySelector('.microphone-icon').classList.add('active');
 }
+
+// Προσθήκη event listener για το κλείσιμο της αναγνώρισης φωνής όταν το κουμπί πατηθεί ξανά
+document.querySelector('button').addEventListener('click', startVoiceRecognition);
 
 
 
