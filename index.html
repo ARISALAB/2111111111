@@ -151,7 +151,10 @@
 
 <script src="script.js"></script>
 <script>
-   
+     function activateVoiceCommand() {
+            speak('ALEXANDROS');
+            // Προσθέστε εδώ τυχόν άλλες φωνητικές οδηγίες που επιθυμείτε
+        }
     function speak(text) {
         const synth = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(text);
