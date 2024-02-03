@@ -34,7 +34,7 @@
                  </div>
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
-        <button onclick="activateVoiceCommand()">Ενεργοποίηση Φωνητικών Εντολών</button>
+<button onclick="startVoiceRecognition()">Έναρξη Φωνητικής Εντολής</button>
 
     
         <label for="datepicker">Επιλέξτε ημερομηνία:</label>
@@ -151,53 +151,71 @@
 
 <script src="script.js"></script>
 <script>
-     function activateVoiceCommand() {
-            speak('ALEXANDROS');
-            // Προσθέστε εδώ τυχόν άλλες φωνητικές οδηγίες που επιθυμείτε
-        }
-    function speak(text) {
-        const synth = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(text);
-        synth.speak(utterance);
-    }
+    function startVoiceRecognition() {
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.lang = 'el-GR';
 
-    function redirectToComparisonPage(type) {
-        var url;
-        if (type === 'days') {
-            url = 'comparison.html?type=days';
-        } else if (type === 'weeks') {
-            url = 'weekly-comparison.html?type=weeks';
-        } else if (type === 'weeks-range') {
-            url = 'weekly-comparison1.html?type=weeks-range';
-        } else if (type === 'months') {
-            url = 'monthly-comparison1.html?type=months';
-        } else if (type === 'months-range') {
-            url = 'monthly-comparison.html?type=months';
-        }
-
-        speak('Μεταβαίνετε στη σελίδα ' + type);
-        window.location.href = url;
-    }
-
-    function toggleDropdown() {
-        var dropdownContent = document.getElementById("dropdown-content");
-        dropdownContent.classList.toggle("show");
-        speak('Άνοιγμα/κλείσιμο μενού επιλογών');
-    }
-
-    // Προσθήκη event listener για το κλείσιμο του dropdown εάν ο χρήστης κάνει κλικ εκτός από το dropdown
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
+    // Συμβάν κλήσης για το Web Speech API
+    recognition.onresult = function (event) {
+        const voiceCommand = event.results[0][0].transcript.trim().toLowerCase();
+        processVoiceCommand(voiceCommand);
     };
+
+    // Συμβάν λήξης κλήσης για το Web Speech API
+    recognition.onend = function () {
+        // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
+        recognition.start();
+    };
+
+    // Έναρξη της αναγνώρισης φωνής
+    recognition.start();
+}
+
+    // Επικοινωνία με το Web Speech API
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.lang = 'el-GR';
+
+// Συνάρτηση για τη μετάφραση της φωνητικής εντολής σε λειτουργία
+function processVoiceCommand(command) {
+    switch (command) {
+        case 'αρχική σελίδα':
+            window.location.href = 'index.html';
+            break;
+        case 'ημερήσια αναφορά':
+            window.location.href = 'daily-report.html';
+            break;
+        case 'εβδομαδιαία αναφορά':
+            window.location.href = 'weekly-report.html';
+            break;
+        case 'μηνιαία αναφορά':
+            window.location.href = 'monthlyreport.html';
+            break;
+        case 'ετήσια αναφορά':
+            window.location.href = 'yearlyreport.html';
+            break;
+        // Προσθέστε επιπλέον εντολές για τις υπόλοιπες σελίδες
+
+        default:
+            // Αν η φωνητική εντολή δεν αναγνωρίζεται
+            alert('Η φωνητική εντολή δεν αναγνωρίζεται.');
+    }
+}
+
+// Συμβάν κλήσης για το Web Speech API
+recognition.onresult = function (event) {
+    const voiceCommand = event.results[0][0].transcript.trim().toLowerCase();
+    processVoiceCommand(voiceCommand);
+};
+
+// Συμβάν λήξης κλήσης για το Web Speech API
+recognition.onend = function () {
+    // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
+    recognition.start();
+};
+
+// Εκκίνηση της αναγνώρισης φωνής
+recognition.start();
+
 </script>
 <script>
     function calculateTotalIncome() {
