@@ -289,7 +289,7 @@ window.onclick = function(event) {
     };
 
 function startVoiceRecognition() {
-    if (recognition && !recognition.active) {
+    if (recognition && recognition.readyState === 'inactive') {
         recognition.start();
     }
 }
