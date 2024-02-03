@@ -151,8 +151,11 @@
 
 <script src="script.js"></script>
 <script>
-    function startVoiceRecognition() {
-    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+// Επικοινωνία με το Web Speech API
+let recognition;
+
+function startVoiceRecognition() {
+    recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     recognition.lang = 'el-GR';
 
     // Συμβάν κλήσης για το Web Speech API
@@ -170,6 +173,7 @@
     // Έναρξη της αναγνώρισης φωνής
     recognition.start();
 }
+
 
 // Συνάρτηση για τη μετάφραση της φωνητικής εντολής σε λειτουργία
 function processVoiceCommand(command) {
