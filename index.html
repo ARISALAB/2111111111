@@ -288,11 +288,13 @@ window.onclick = function(event) {
         }
     };
 
-   function startVoiceRecognition() {
-    if (recognition && !recognition.recognizing) {
+function startVoiceRecognition() {
+    if (recognition && recognition.readyState !== 'listening') {
         recognition.start();
     }
 }
+
+
 
 
   function toggleVoiceRecognition() {
