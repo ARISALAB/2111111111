@@ -151,10 +151,14 @@
 
 <script src="script.js"></script>
 <script>
-// Επικοινωνία με το Web Speech API
 let recognition;
 
 function startVoiceRecognition() {
+    if (recognition && recognition.running) {
+        console.log("Recognition already in progress.");
+        return;
+    }
+
     recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     recognition.lang = 'el-GR';
 
@@ -167,12 +171,15 @@ function startVoiceRecognition() {
     // Συμβάν λήξης κλήσης για το Web Speech API
     recognition.onend = function () {
         // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
-        recognition.start();
+        recognition.running = false;
+        startVoiceRecognition();
     };
 
     // Έναρξη της αναγνώρισης φωνής
     recognition.start();
+    recognition.running = true;
 }
+
 
 
 // Συνάρτηση για τη μετάφραση της φωνητικής εντολής σε λειτουργία
