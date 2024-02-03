@@ -34,7 +34,10 @@
                  </div>
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
-<button onclick="startVoiceRecognition()">Έναρξη Φωνητικής Εντολής</button>
+<button onclick="startVoiceRecognition()">
+    <span id="microphone-icon" class="microphone-off">🎤</span>
+    Έναρξη Φωνητικής Εντολής
+</button>
 
     
         <label for="datepicker">Επιλέξτε ημερομηνία:</label>
@@ -142,7 +145,35 @@
     </div>
 </div>
    <!-- ... Υπόλοιπος κώδικας ... -->
-   
+   <style>
+#microphone-icon {
+    margin-right: 0.5rem;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% {
+        opacity: 0.5;
+    }
+    25%, 75% {
+        opacity: 1;
+    }
+}
+
+.microphone-off {
+    display: inline-block;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-out;
+}
+
+.microphone-on {
+    display: inline-block;
+    transform: rotate(30deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+       
+   </style>
 </body>
 
 
@@ -158,11 +189,11 @@ function startVoiceRecognition() {
         console.log("Recognition already in progress.");
         return;
     }
-// Προσθήκη ήχου εκκίνησης
-    const startSound = new Audio('51.mp3');
-    startSound.play();
+
     recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     recognition.lang = 'el-GR';
+
+    const microphoneIcon = document.getElementById('microphone-icon');
 
     // Συμβάν κλήσης για το Web Speech API
     recognition.onresult = function (event) {
@@ -175,12 +206,19 @@ function startVoiceRecognition() {
         // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
         recognition.running = false;
         startVoiceRecognition();
+        microphoneIcon.classList.remove('microphone-on');
+        microphoneIcon.classList.add('microphone-off');
     };
 
     // Έναρξη της αναγνώρισης φωνής
     recognition.start();
     recognition.running = true;
+
+    // Ενεργοποίηση του εικονιδίου μικροφώνου
+    microphoneIcon.classList.remove('microphone-off');
+    microphoneIcon.classList.add('microphone-on');
 }
+
 
 
 
