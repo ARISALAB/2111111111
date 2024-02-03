@@ -159,7 +159,7 @@ function startVoiceRecognition() {
         return;
     }
 // Προσθήκη ήχου εκκίνησης
-    const startSound = new Audio('path/to/start-sound.mp3');
+    const startSound = new Audio('50.mp3');
     startSound.play();
     recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     recognition.lang = 'el-GR';
