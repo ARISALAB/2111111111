@@ -190,9 +190,9 @@ let recognition;
 
 function startVoiceRecognition() {
     if (recognition && recognition.running) {
+        console.log("Stopping recognition.");
         recognition.stop();
         document.querySelector('.microphone-icon').classList.remove('active');
-        console.log("Recognition stopped.");
         return;
     }
 
@@ -209,7 +209,7 @@ function startVoiceRecognition() {
     recognition.onend = function () {
         // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
         recognition.running = false;
-        startVoiceRecognition();
+        document.querySelector('.microphone-icon').classList.remove('active');
     };
 
     // Έναρξη της αναγνώρισης φωνής
@@ -219,10 +219,6 @@ function startVoiceRecognition() {
     // Ενεργοποίηση του εικονιδίου μικροφώνου
     document.querySelector('.microphone-icon').classList.add('active');
 }
-
-// Προσθήκη event listener για το κλείσιμο της αναγνώρισης φωνής όταν το κουμπί πατηθεί ξανά
-document.querySelector('button').addEventListener('click', startVoiceRecognition);
-
 
 
 
