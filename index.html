@@ -220,18 +220,10 @@ function startVoiceRecognition() {
     recognition.start();
     recognition.running = true;
 
-    // Ενεργοποίηση του εικονιδίου μικροφώνου με αναβόσβηση
+    // Ενεργοποίηση του εικονιδίου μικροφώνου
     microphoneIcon.classList.remove('microphone-off');
     microphoneIcon.classList.add('microphone-on');
-    microphoneIcon.classList.add('blinking');
 }
-
-// Προσθήκη ενός event listener για να απενεργοποιεί την αναβόσβηση μετά το κλικ
-document.querySelector('button').addEventListener('mouseup', function() {
-    const microphoneIcon = document.getElementById('microphone-icon');
-    microphoneIcon.classList.remove('blinking');
-});
-
 
 
 
