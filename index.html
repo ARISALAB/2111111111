@@ -34,7 +34,7 @@
                  </div>
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
-<button onclick="toggleVoiceRecognition()">Ενεργοποίηση Φωνητικής Αναγνώρισης</button>
+        <button onclick="startVoiceRecognition()">Ενεργοποίηση Φωνητικής Αναγνώρισης</button>
 
     
         <label for="datepicker">Επιλέξτε ημερομηνία:</label>
@@ -247,67 +247,65 @@ window.onclick = function(event) {
 
 
 </script>
-<script>
-    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-    recognition.lang = 'en-US';
+    <SCRIPT>
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.lang = 'en-US';
 
-    recognition.onresult = function (event) {
-        const command = event.results[0][0].transcript.toLowerCase();
-        
-        switch (command) {
-            case "αρχική σελίδα":
-                window.location.href = 'index.html';
-                break;
-            case "ημερήσια αναφορά":
-                window.location.href = 'daily-report.html';
-                break;
-            case "εβδομαδιαία αναφορά":
-                window.location.href = 'weekly-report.html';
-                break;
-            case "μηνιαία αναφορά":
-                window.location.href = 'monthlyreport.html';
-                break;
-            case "ετήσια αναφορά":
-                window.location.href = 'yearlyreport.html';
-                break;
-            case "σύγκριση ημερών":
-                redirectToComparisonPage('days');
-                break;
-            case "σύγκριση εβδομάδων":
-                redirectToComparisonPage('weeks');
-                break;
-            case "σύγκριση εύρους εβδομάδων":
-                redirectToComparisonPage('weeks-range');
-                break;
-            case "σύγκριση μηνών":
-                redirectToComparisonPage('months');
-                break;
-            case "σύγκριση εύρους μηνών":
-                redirectToComparisonPage('months-range');
-                break;
-        }
-    };
+// Καθορίζει τις ενέργειες που πρέπει να εκτελεστούν όταν υπάρξει αναγνώριση φωνής
+recognition.onresult = function (event) {
+    const command = event.results[0][0].transcript.toLowerCase();
+    console.log('Command:', command);
 
+    // Καθορίζει τις διάφορες ενέργειες βάσει της αναγνωρισμένης εντολής
+    switch (command) {
+        case "αρχική σελίδα":
+            window.location.href = 'index.html';
+            break;
+        case "ημερήσια αναφορά":
+            window.location.href = 'daily-report.html';
+            break;
+        case "εβδομαδιαία αναφορά":
+            window.location.href = 'weekly-report.html';
+            break;
+        case "μηνιαία αναφορά":
+            window.location.href = 'monthlyreport.html';
+            break;
+        case "ετήσια αναφορά":
+            window.location.href = 'yearlyreport.html';
+            break;
+        case "σύγκριση ημερών":
+            redirectToComparisonPage('days');
+            break;
+        case "σύγκριση εβδομάδων":
+            redirectToComparisonPage('weeks');
+            break;
+        case "σύγκριση εύρους εβδομάδων":
+            redirectToComparisonPage('weeks-range');
+            break;
+        case "σύγκριση μηνών":
+            redirectToComparisonPage('months');
+            break;
+        case "σύγκριση εύρους μηνών":
+            redirectToComparisonPage('months-range');
+            break;
+    }
+};
+
+// Εμφανίζει μήνυμα λάθους στην κονσόλα αν υπάρξει σφάλμα στην αναγνώριση φωνής
+recognition.onerror = function (event) {
+    console.error('Speech recognition error:', event.error);
+};
+
+// Εμφανίζει μήνυμα όταν ολοκληρωθεί η αναγνώριση φωνής
+recognition.onend = function () {
+    console.log('Speech recognition ended.');
+};
+
+// Ξεκινά την αναγνώριση φωνής όταν καλείται η συνάρτηση startVoiceRecognition
 function startVoiceRecognition() {
-    if (recognition && recognition.readyState === 'inactive' && !recognition.listening) {
-        recognition.start();
-    }
+    recognition.start();
 }
 
-
-
-
-
-
-  function toggleVoiceRecognition() {
-    if (recognition) {
-        if (recognition.recognizing) {
-            recognition.stop();
-        } else {
-            startVoiceRecognition();
-        }
-    }
-}
 
 
     // Άλλος κώδικας...
