@@ -35,10 +35,8 @@
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
 <button onclick="startVoiceRecognition()">
-    <div id="microphone-container">
-        <span id="microphone-icon">🎤</span>
-    </div>
     Έναρξη Φωνητικής Εντολής
+    <span class="microphone-icon"></span>
 </button>
 
 
@@ -153,30 +151,28 @@
 </div>
    <!-- ... Υπόλοιπος κώδικας ... -->
    <style>
-#microphone-container {
+.microphone-icon {
     display: inline-block;
-    margin-right: 0.5rem;
+    width: 12px;
+    height: 12px;
+    margin-left: 5px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    transform-origin: center;
 }
 
-#microphone-icon {
-    animation: blink 1s infinite;
-    display: inline-block;
-    transform: rotate(0deg);
-    transition: transform 0.3s ease-out;
+.microphone-icon.active {
+    background-color: #33cc33; /* Χρώμα πράσινο κατά τη διάρκεια της αναγνώρισης */
 }
 
-@keyframes blink {
-    0%, 50%, 100% {
-        opacity: 0.5;
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
     }
-    25%, 75% {
-        opacity: 1;
+    100% {
+        transform: rotate(360deg);
     }
-}
-
-.microphone-on {
-    transform: rotate(30deg);
-    transition: transform 0.3s ease-in-out;
 }
 
 
@@ -201,8 +197,6 @@ function startVoiceRecognition() {
     recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     recognition.lang = 'el-GR';
 
-    const microphoneIcon = document.getElementById('microphone-icon');
-
     // Συμβάν κλήσης για το Web Speech API
     recognition.onresult = function (event) {
         const voiceCommand = event.results[0][0].transcript.trim().toLowerCase();
@@ -214,7 +208,6 @@ function startVoiceRecognition() {
         // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
         recognition.running = false;
         startVoiceRecognition();
-        microphoneIcon.classList.remove('microphone-on');
     };
 
     // Έναρξη της αναγνώρισης φωνής
@@ -222,7 +215,7 @@ function startVoiceRecognition() {
     recognition.running = true;
 
     // Ενεργοποίηση του εικονιδίου μικροφώνου
-    microphoneIcon.classList.add('microphone-on');
+    document.querySelector('.microphone-icon').classList.add('active');
 }
 
 
