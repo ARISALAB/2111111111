@@ -148,6 +148,7 @@
    <style>
 #microphone-icon {
     margin-right: 0.5rem;
+    font-size: 24px; /* Μέγεθος εικονιδίου */
     animation: blink 1s infinite;
 }
 
@@ -163,14 +164,16 @@
 .microphone-off {
     display: inline-block;
     transform: rotate(0deg);
-    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, font-size 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .microphone-on {
     display: inline-block;
     transform: rotate(30deg);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, font-size 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 1;
 }
+
 
        
    </style>
