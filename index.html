@@ -288,17 +288,23 @@ window.onclick = function(event) {
         }
     };
 
-    function startVoiceRecognition() {
+   function startVoiceRecognition() {
+    if (recognition && !recognition.recognizing) {
         recognition.start();
     }
+}
 
-    function toggleVoiceRecognition() {
-        if (recognition && recognition.recognizing) {
+
+  function toggleVoiceRecognition() {
+    if (recognition) {
+        if (recognition.recognizing) {
             recognition.stop();
         } else {
             startVoiceRecognition();
         }
     }
+}
+
 
     // Άλλος κώδικας...
 </script>
