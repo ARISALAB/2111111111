@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+    <title>Ημερήσια Αναφορά</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    
+</head>
+<body>
+
+    <!-- Προσθήκη στην ενότητα <div class="container"> -->
+<div class="container">
+    <div class="container2"> Οικονομικός Έλεγχος Εστιατορίου</div>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="container3">
+        <button onclick="window.location.href='index.html'">Αρχική Σελίδα</button>
+        <button onclick="window.location.href='daily-report.html'">Ημερήσια Αναφορά</button>
+        <button onclick="window.location.href='weekly-report.html'">Εβδομαδιαία Αναφορά</button>
+        <button onclick="window.location.href='monthlyreport.html'">Μηνιαία Αναφορά</button>
+        <button onclick="window.location.href='yearlyreport.html'">Ετήσια Αναφορά</button>
+        <div class="dropdown">
+            <button onclick="toggleDropdown()" class="dropbtn">Σύγκριση </button>
+            <div id="dropdown-content" class="dropdown-content">
+                <button onclick="redirectToComparisonPage('days')">Ημέρες</button>
+                    <button onclick="redirectToComparisonPage('weeks')">Εβδομάδες</button>
+                    <button onclick="redirectToComparisonPage('weeks-range')">Εύρος Εβδομάδων</button>
+                    <button onclick="redirectToComparisonPage('months')">Μήνες</button>
+                    <button onclick="redirectToComparisonPage('months-range')">Εύρος Μηνών</button>
+</div>
+        </div>
+        
+             </div>
+             
+    <h1>Ημερήσια Αναφορά</h1>
+
+    <label for="reportDate">Επιλέξτε ημερομηνία:</label>
+    <input type="date" id="reportDate">
+    
+    <button onclick="generateDailyReport()"style="margin-top: 10px; margin-bottom: 10px;">Εμφάνιση Αναφοράς</button>
+    
+
+   
+    <div class="container">
+    <table class="data-table" id="dailyReportTable">
+        <caption>Ημερήσια Αναφορά</caption>
+        <thead>
+            <tr>
+                <th>Είδος</th>
+                <th>Ποσό (€)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <!-- Πίνακας Ημερήσιοι Δημοτικοί Φόροι -->
+<table class="data-table" id="dailyTaxesTable">
+    <caption>Ημερήσιοι Δημοτικοί Φόροι (0,05%)</caption>
+    <thead>
+        <tr>
+            <th>Στοιχείο</th>
+            <th>Ποσό (€)</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<button onclick="generatePDF()">Εξαγωγή σε PDF</button>
+
+<canvas id="myChart" width="400" height="200"></canvas>
+
+</div>
+
+
+
+<script src="script.js"></script>
+<script>
+function generatePDF() {
+    const reportDate = document.getElementById('reportDate').value;
+    const parsedDate = new Date(reportDate);
+    const formattedDate = parsedDate.toLocaleDateString('el-GR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    const savedData = localStorage.getItem(parsedDate.toISOString().split('T')[0]);
+
+    if (savedData) {
+        const parsedData = JSON.parse(savedData);
+
+        // Δημιουργία δομημένου πίνακα
+        const tableContent = [
+            [{ text: 'Είδος', bold: true, alignment: 'center' }, { text: 'Ποσό (€)', bold: true, alignment: 'center' }],
+            [{ text: 'Ανάλυση Εσόδων', colSpan: 2, bold: true, alignment: 'center', fillColor: '#eee' ,margin: [0, 10, 0, 10] }, ''],
+
+            ['Έσοδα από Μετρητά', formatCurrency(parsedData.income.cash)],
+            ['Έσοδα από Κάρτα', formatCurrency(parsedData.income.card)],
+            ['Σύνολο Εσόδων', formatCurrency(parsedData.income.cash + parsedData.income.card)],
+            [{ text: 'Ανάλυση Εξόδων', colSpan: 2, bold: true, alignment: 'center', fillColor: '#eee' ,margin: [0, 10, 0, 10] }, ''],
+            ['Έξοδα από Μετρητά', formatCurrency(parsedData.expense.cash)],
+            ['Έξοδα από Κάρτα', formatCurrency(parsedData.expense.card)],
+            ['Σύνολο Εξόδων', formatCurrency(parsedData.expense.cash + parsedData.expense.card)],
+            [{ text: 'Συνολικά Ποσά', colSpan: 2, bold: true, alignment: 'center', fillColor: '#eee' ,margin: [0, 10, 0, 10] }, ''],
+            ['Σύνολο Μετρητών', formatCurrency(parsedData.income.cash - parsedData.expense.cash)],
+            ['Σύνολο Καρτών', formatCurrency(parsedData.income.card - parsedData.expense.card)]
+        ];
+
+
+        // Ορισμός παραμέτρων για το pdfmake
+        const docDefinition = {
+            content: [
+                { text: 'Ημερήσια Αναφορά - ' + formattedDate, style: 'header' },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['*', '*'],
+                        body: tableContent
+                    },
+                    layout: {
+                        vLineWidth: (i, node) => (i === 0 || i === node.table.body.length) ? 2 : 1,
+                        hLineWidth: (i, node) => (i === 0 || i === node.table.widths.length) ? 2 : 1,
+                        vLineColor: (i, node) => (i === 0 || i === node.table.body.length) ? '#000' : '#ddd',
+                        hLineColor: (i, node) => (i === 0 || i === node.table.widths.length) ? '#000' : '#ddd',
+                        rowSpacing: (i, node) => (i === 0 || i === node.table.body.length) ? 80 : 100
+
+                    }
+                },
+                { text: '', margin: [0, 20] } // Προσθήκη κενού διαστήματος
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    margin: [0, 0, 0, 30],
+                    alignment: 'center'
+                }
+            }
+        };
+   // Δημιουργία γραφήματος
+   const chartCanvas = document.getElementById('myChart');
+        const chartDataUrl = chartCanvas.toDataURL();
+
+        // Προσθήκη γραφήματος στο PDF
+        docDefinition.content.push({ image: chartDataUrl, width: 500, alignment: 'center', margin: [0, 20, 0, 20] });
+
+        // Προσθήκη ποσών πάνω από τις μπάρες
+        const barAmounts = parsedData.income.cash + parsedData.income.card;
+        docDefinition.content.push({ text: `Συνολικά Έσοδα: ${formatCurrency(barAmounts)}`, margin: [0, 0, 0, 10] });
+
+        const totalExpenses = parsedData.expense.cash + parsedData.expense.card;
+        docDefinition.content.push({ text: `Συνολικά Έξοδα: ${formatCurrency(totalExpenses)}`, margin: [0, 0, 0, 10] });
+
+        const profits = barAmounts - totalExpenses;
+        docDefinition.content.push({ text: `Κέρδη: ${formatCurrency(profits)}`, margin: [0, 0, 0, 10] });
+
+        // Δημιουργία PDF
+        pdfMake.createPdf(docDefinition).download('daily_report.pdf');
+    } else {
+        alert('Δεν υπάρχουν αποθηκευμένα δεδομένα για την επιλεγμένη ημερομηνία.');
+    }
+}
+
+function generateChart() {
+    const reportDate = document.getElementById('reportDate').value;
+    const parsedDate = new Date(reportDate);
+
+    // Έλεγχος αν ο παλιός γράφος υπάρχει και αν ναι, καταστροφή του
+    const existingChart = Chart.getChart('myChart');
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+    // Ελέγχετε αν υπάρχουν αποθηκευμένα δεδομένα για την επιλεγμένη ημερομηνία
+    const savedData = localStorage.getItem(parsedDate.toISOString().split('T')[0]);
+
+    if (savedData) {
+        const parsedData = JSON.parse(savedData);
+
+        // Δημιουργία πίνακα δεδομένων για τη γραφική παράσταση
+        const labels = ['Συνολικά Έσοδα', 'Συνολικά Έξοδα', 'Κέρδη'];
+        const data = [
+            parsedData.income.cash + parsedData.income.card,
+            parsedData.expense.cash + parsedData.expense.card,
+            parsedData.income.cash + parsedData.income.card - (parsedData.expense.cash + parsedData.expense.card)
+        ];
+
+        // Αρχικοποίηση του πίνακα για τη γραφική παράσταση
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Οικονομική Αναφορά',
+                    data: data,
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',  // Κόκκινο με αυξημένη ένταση
+                'rgba(54, 162, 235, 0.7)',  // Μπλε με αυξημένη ένταση
+                'rgba(75, 192, 192, 0.7)'   // Κυανό με αυξημένη ένταση
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    } else {
+        alert('Δεν υπάρχουν αποθηκευμένα δεδομένα για την επιλεγμένη ημερομηνία.');
+    }
+}
+
+        function toggleDropdown() {
+    var dropdownContent = document.getElementById("dropdown-content");
+    dropdownContent.classList.toggle("show");
+}
+
+// Κλείνει το dropdown αν κάνετε κλικ έξω από αυτό
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn') && !event.target.matches('.dropdown-content')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
+function redirectToComparisonPage(type) {
+    var url;
+    if (type === 'days') {
+        url = 'comparison.html?type=days';
+    } else if (type === 'weeks') {
+        url = 'weekly-comparison.html?type=weeks';
+    } else if (type === 'weeks-range') {
+        url = 'weekly-comparison1.html?type=weeks-range'; // Αλλαγή στο URL για το "Εύρος Εβδομάδων"
+
+    }else if (type === 'months') {
+        url = 'monthly-comparison1.html?type=months';
+    }else if (type === 'months-range') {
+        url = 'monthly-comparison.html?type=months';
+    }
+    window.location.href = url;
+}function toggleDropdown() {
+    var dropdownContent = document.getElementById("dropdown-content");
+    dropdownContent.classList.toggle("show");
+}
+
+// Προσθήκη event listener για το κλείσιμο του dropdown εάν ο χρήστης κάνει κλικ εκτός από το dropdown
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+</script>
+</body>
+</html>
