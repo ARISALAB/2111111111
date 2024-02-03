@@ -152,6 +152,8 @@
 
 <script src="script.js"></script>
 <script>
+let recognition;
+
 function startVoiceRecognition() {
     if (recognition && recognition.running) {
         console.log("Recognition already in progress.");
@@ -184,6 +186,8 @@ function startVoiceRecognition() {
     recognition.start();
     recognition.running = true;
 }
+
+
 
 
 
