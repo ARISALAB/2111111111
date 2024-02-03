@@ -158,7 +158,9 @@ function startVoiceRecognition() {
         console.log("Recognition already in progress.");
         return;
     }
-
+// Προσθήκη ήχου εκκίνησης
+    const startSound = new Audio('path/to/start-sound.mp3');
+    startSound.play();
     recognition = new webkitSpeechRecognition() || new SpeechRecognition();
     recognition.lang = 'el-GR';
 
