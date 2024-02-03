@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
- 
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-6BSB/rq5re20GheUx2Q3AW2sOBC1+5N73iWA5RGhHVAiENeXt6A+V3rB2N3wS3oJ4xucQ1w7wSJ65eFMCeHJ1qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
    
     <title>Οικονομικός Έλεγχος Εστιατορίου</title>
 </head>
@@ -35,14 +36,10 @@
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
 <button onclick="startVoiceRecognition()">
-    <span id="microphone-icon" class="microphone-off">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 7a4 4 0 1 0 6 0" />
-            <path d="M10 12a9 9 0 0 0 4.5 7.794V21a1 1 0 0 1-2 0v-1.206A9 9 0 0 0 10 12V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v9a9 9 0 0 0-3 6.855" />
-        </svg>
-    </span>
+    <span id="microphone-icon" class="microphone-off"><i class="fas fa-microphone"></i></span>
     Έναρξη Φωνητικής Εντολής
 </button>
+
 
 
     
@@ -155,7 +152,6 @@
 #microphone-icon {
     margin-right: 0.5rem;
     animation: blink 1s infinite;
-    display: inline-block;
 }
 
 @keyframes blink {
@@ -174,9 +170,10 @@
 
 .microphone-on {
     display: inline-block;
-    transform: rotate(30deg);
+    transform: scale(1.2);
     transition: transform 0.3s ease-in-out;
 }
+
 
        
    </style>
