@@ -34,7 +34,7 @@
                  </div>
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
-        <button onclick="startVoiceRecognition()">Ενεργοποίηση Φωνητικής Αναγνώρισης</button>
+<button onclick="toggleVoiceRecognition()">Ενεργοποίηση Φωνητικής Αναγνώρισης</button>
 
     
         <label for="datepicker">Επιλέξτε ημερομηνία:</label>
@@ -299,6 +299,15 @@ window.onclick = function(event) {
         // Προσθέστε τις εντολές και τις αντίστοιχες ενέργειες σας
     }
 };
+let recognition;
+
+function toggleVoiceRecognition() {
+    if (recognition && recognition.recognizing) {
+        recognition.stop();
+    } else {
+        startVoiceRecognition();
+    }
+}
 
 recognition.onerror = function (event) {
     console.error('Speech recognition error:', event.error);
