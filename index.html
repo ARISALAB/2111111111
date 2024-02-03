@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+ 
+   
+    <title>Οικονομικός Έλεγχος Εστιατορίου</title>
+</head>
+<body>
+    <div class="container">
+        <div class="container2">Οικονομικός Έλεγχος Εστιατορίου</div>
+        
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="container3">
+            <button onclick="window.location.href='index.html'">Αρχική Σελίδα</button>
+            <button onclick="window.location.href='daily-report.html'">Ημερήσια Αναφορά</button>
+            <button onclick="window.location.href='weekly-report.html'">Εβδομαδιαία Αναφορά</button>
+            <button onclick="window.location.href='monthlyreport.html'">Μηνιαία Αναφορά</button>
+            <button onclick="window.location.href='yearlyreport.html'">Ετήσια Αναφορά</button>
+
+            <div class="dropdown">
+                <button onclick="toggleDropdown()" class="dropbtn">Σύγκριση </button>
+                <div id="dropdown-content" class="dropdown-content">
+                    <button onclick="redirectToComparisonPage('days')">Ημέρες</button>
+                    <button onclick="redirectToComparisonPage('weeks')">Εβδομάδες</button>
+                    <button onclick="redirectToComparisonPage('weeks-range')">Εύρος Εβδομάδων</button>
+                    <button onclick="redirectToComparisonPage('months')">Μήνες</button>
+                    <button onclick="redirectToComparisonPage('months-range')">Εύρος Μηνών</button>
+</div>
+            </div>
+            
+                 </div>
+        <h1>Καταγραφή Κίνησεων Ημέρας</h1>
+        
+        <button onclick="startVoiceRecognition()">Ενεργοποίηση Φωνητικής Αναγνώρισης</button>
+
+    
+        <label for="datepicker">Επιλέξτε ημερομηνία:</label>
+        <input type="date" id="datepicker"style="margin-top: 10px;">
+        <p id="selectedDateLabel">Ημερομηνία:</p>
+      
+   
+
+    <div class="data-tables">
+        <div class="income-table">
+            <h2>Πίνακας Εσόδων</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Είδος Εσόδων</th>
+                        <th>Ποσότητα</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Μετρητά</td>
+                        <td><input type="number" id="cashIncome" oninput="calculateTotalIncome(weeklyReportData)"></td>
+
+                    </tr>
+                    <tr>
+                        <td>Κάρτες</td>
+                        <td><input type="number" id="cardIncome" oninput="calculateTotalIncome(weeklyReportData)"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Σύνολο Εσόδων</strong></td>
+                        <td id="totalIncome">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="expense-table">
+            <h2>Πίνακας Εξόδων</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Είδος Εξόδων</th>
+                        <th>Ποσότητα</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Μετρητά</td>
+                        <td><input type="number" id="cashExpense" oninput="calculateTotalExpense(weeklyReportData)"></td>
+                    </tr>
+                    <tr>
+                        <td>Κάρτες</td>
+                        <td><input type="number" id="cardExpense" oninput="calculateTotalExpense(weeklyReportData)"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Σύνολο Εξόδων</strong></td>
+                        <td id="totalExpense">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="summary-table">
+            <h2>Σύνολα</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Τύπος</th>
+                        <th>Σύνολο</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Μετρητά</td>
+                        <td id="totalCash">0</td>
+                    </tr>
+                    <tr>
+                        <td>Κάρτες</td>
+                        <td id="totalCard">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button id="saveButton" onclick="saveDataToLocalStorage()">Αποθήκευση Δεδομένων</button>
+    <!-- Προσθήκη πίνακα για τα αποθηκευμένα δεδομένα -->
+    <div class="saved-data-table">
+        <h2>Αποθηκευμένα Δεδομένα</h2>
+        <table id="savedDataTable">
+            <thead>
+                <tr>
+                    <th>Ημερομηνία</th>
+                    <th>Έσοδα (Μετρητά)</th>
+                    <th>Έσοδα (Κάρτες)</th>
+                    <th>Σύνολο Εσόδων</th>
+                    <th>Έξοδα (Μετρητά)</th>
+                    <th>Έξοδα (Κάρτες)</th>
+                    <th>Σύνολο Εξόδων</th>
+                    <th>Συνολικά Μετρητά</th>
+                    <th>Συνολικές Κάρτες</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+   <!-- ... Υπόλοιπος κώδικας ... -->
+   
+</body>
+
+
+
+<!-- ... Υπόλοιπος κώδικας ... -->
+
+<script src="script.js"></script>
+
+<script>
+    function calculateTotalIncome() {
+        const cashIncome = parseFloat(document.getElementById('cashIncome').value) || 0;
+        const cardIncome = parseFloat(document.getElementById('cardIncome').value) || 0;
+        const totalIncome = cashIncome + cardIncome;
+
+        document.getElementById('totalIncome').textContent = formatCurrency(totalIncome);
+        updateTotals();
+    }
+
+    function calculateTotalExpense() {
+        const cashExpense = parseFloat(document.getElementById('cashExpense').value) || 0;
+        const cardExpense = parseFloat(document.getElementById('cardExpense').value) || 0;
+        const totalExpense = cashExpense + cardExpense;
+
+        document.getElementById('totalExpense').textContent = formatCurrency(totalExpense);
+        updateTotals();
+    }
+
+    function updateTotals() {
+        const totalCash = parseFloat(document.getElementById('cashIncome').value) - parseFloat(document.getElementById('cashExpense').value) || 0;
+        const totalCard = parseFloat(document.getElementById('cardIncome').value) - parseFloat(document.getElementById('cardExpense').value) || 0;
+
+        document.getElementById('totalCash').textContent = formatCurrency(totalCash);
+        document.getElementById('totalCard').textContent = formatCurrency(totalCard);
+    }
+
+    // Καλείτε τις συναρτήσεις για την αρχικοποίηση των συνολικών ποσών
+    calculateTotalIncome();
+    calculateTotalExpense();
+    updateTotals();
+</script>
+<script>
+    function redirectToComparisonPage() {
+        const comparisonType = document.getElementById('comparisonType').value;
+        window.location.href = `compare${capitalizeFirstLetter(comparisonType)}.html`;
+    }
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    function toggleDropdown() {
+    var dropdownContent = document.getElementById("dropdown-content");
+    dropdownContent.classList.toggle("show");
+}
+
+// Κλείνει το dropdown αν κάνετε κλικ έξω από αυτό
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn') && !event.target.matches('.dropdown-content')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
+function redirectToComparisonPage(type) {
+    var url;
+    if (type === 'days') {
+        url = 'comparison.html?type=days';
+    } else if (type === 'weeks') {
+        url = 'weekly-comparison.html?type=weeks';
+    } else if (type === 'weeks-range') {
+        url = 'weekly-comparison1.html?type=weeks-range'; // Αλλαγή στο URL για το "Εύρος Εβδομάδων"
+
+    }else if (type === 'months') {
+        url = 'monthly-comparison1.html?type=months';
+    }else if (type === 'months-range') {
+        url = 'monthly-comparison.html?type=months';
+    }
+    window.location.href = url;
+}function toggleDropdown() {
+    var dropdownContent = document.getElementById("dropdown-content");
+    dropdownContent.classList.toggle("show");
+}
+
+// Προσθήκη event listener για το κλείσιμο του dropdown εάν ο χρήστης κάνει κλικ εκτός από το dropdown
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
+
+</script>
+<script>
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.lang = 'en-US';
+
+    recognition.onresult = function (event) {
+        const command = event.results[0][0].transcript.toLowerCase();
+        
+        switch (command) {
+            case "αρχική σελίδα":
+                window.location.href = 'index.html';
+                break;
+            case "ημερήσια αναφορά":
+                window.location.href = 'daily-report.html';
+                break;
+            case "εβδομαδιαία αναφορά":
+                window.location.href = 'weekly-report.html';
+                break;
+            case "μηνιαία αναφορά":
+                window.location.href = 'monthlyreport.html';
+                break;
+            case "ετήσια αναφορά":
+                window.location.href = 'yearlyreport.html';
+                break;
+            case "σύγκριση ημερών":
+                redirectToComparisonPage('days');
+                break;
+            case "σύγκριση εβδομάδων":
+                redirectToComparisonPage('weeks');
+                break;
+            case "σύγκριση εύρους εβδομάδων":
+                redirectToComparisonPage('weeks-range');
+                break;
+            case "σύγκριση μηνών":
+                redirectToComparisonPage('months');
+                break;
+            case "σύγκριση εύρους μηνών":
+                redirectToComparisonPage('months-range');
+                break;
+        }
+    };
+
+    function startVoiceRecognition() {
+        recognition.start();
+    }
+    recognition.onresult = function (event) {
+    const command = event.results[0][0].transcript.toLowerCase();
+    console.log('Command:', command);
+
+    switch (command) {
+        // Προσθέστε τις εντολές και τις αντίστοιχες ενέργειες σας
+    }
+};
+
+recognition.onerror = function (event) {
+    console.error('Speech recognition error:', event.error);
+};
+
+recognition.onend = function () {
+    console.log('Speech recognition ended.');
+};
+
+
+</script>
+
+</body>
+
+</html>
