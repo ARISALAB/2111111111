@@ -171,10 +171,6 @@
     recognition.start();
 }
 
-    // Επικοινωνία με το Web Speech API
-const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-recognition.lang = 'el-GR';
-
 // Συνάρτηση για τη μετάφραση της φωνητικής εντολής σε λειτουργία
 function processVoiceCommand(command) {
     switch (command) {
