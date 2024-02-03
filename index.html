@@ -35,9 +35,15 @@
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
 <button onclick="startVoiceRecognition()">
-    <span id="microphone-icon" class="microphone-off">🎤</span>
+    <span id="microphone-icon" class="microphone-off">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 7a4 4 0 1 0 6 0" />
+            <path d="M10 12a9 9 0 0 0 4.5 7.794V21a1 1 0 0 1-2 0v-1.206A9 9 0 0 0 10 12V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v9a9 9 0 0 0-3 6.855" />
+        </svg>
+    </span>
     Έναρξη Φωνητικής Εντολής
 </button>
+
 
     
         <label for="datepicker">Επιλέξτε ημερομηνία:</label>
@@ -148,8 +154,8 @@
    <style>
 #microphone-icon {
     margin-right: 0.5rem;
-    font-size: 24px; /* Μέγεθος εικονιδίου */
     animation: blink 1s infinite;
+    display: inline-block;
 }
 
 @keyframes blink {
@@ -163,17 +169,14 @@
 
 .microphone-off {
     display: inline-block;
-    transform: rotate(0deg);
-    transition: transform 0.3s ease-out, font-size 0.3s ease-out, opacity 0.3s ease-out;
+    transition: transform 0.3s ease-out;
 }
 
 .microphone-on {
     display: inline-block;
     transform: rotate(30deg);
-    transition: transform 0.3s ease-in-out, font-size 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    opacity: 1;
+    transition: transform 0.3s ease-in-out;
 }
-
 
        
    </style>
