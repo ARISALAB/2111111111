@@ -289,7 +289,26 @@ window.onclick = function(event) {
     };
 
   
+
+
 let recognition; // Δήλωση της μεταβλητής έξω από τις συναρτήσεις
+
+function startVoiceRecognition() {
+    recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.lang = 'en-US';
+
+    // Άλλες ρυθμίσεις και event listeners...
+
+    recognition.onerror = function (event) {
+        console.error('Speech recognition error:', event.error);
+    };
+
+    recognition.onend = function () {
+        console.log('Speech recognition ended.');
+    };
+
+    recognition.start();
+}
 
 function toggleVoiceRecognition() {
     if (recognition && recognition.recognizing) {
@@ -298,26 +317,6 @@ function toggleVoiceRecognition() {
         startVoiceRecognition();
     }
 }
-
-// Άλλος κώδικας...
-
-function startVoiceRecognition() {
-    recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-    recognition.lang = 'en-US';
-
-    // Άλλες ρυθμίσεις και event listeners...
-
-    recognition.start();
-}
-
-
-recognition.onerror = function (event) {
-    console.error('Speech recognition error:', event.error);
-};
-
-recognition.onend = function () {
-    console.log('Speech recognition ended.');
-};
 
 
 </script>
