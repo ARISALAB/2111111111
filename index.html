@@ -35,9 +35,12 @@
         <h1>Καταγραφή Κίνησεων Ημέρας</h1>
         
 <button onclick="startVoiceRecognition()">
-    <span id="microphone-icon" class="microphone-off">🎤</span>
+    <div id="microphone-container">
+        <span id="microphone-icon">🎤</span>
+    </div>
     Έναρξη Φωνητικής Εντολής
 </button>
+
 
 
 
@@ -150,9 +153,15 @@
 </div>
    <!-- ... Υπόλοιπος κώδικας ... -->
    <style>
-#microphone-icon {
+#microphone-container {
+    display: inline-block;
     margin-right: 0.5rem;
+}
+
+#microphone-icon {
     animation: blink 1s infinite;
+    transform-origin: center;
+    display: inline-block;
 }
 
 @keyframes blink {
@@ -165,17 +174,14 @@
 }
 
 .microphone-off {
-    display: inline-block;
     transform: rotate(0deg);
     transition: transform 0.3s ease-out;
 }
 
 .microphone-on {
-    display: inline-block;
     transform: rotate(30deg);
     transition: transform 0.3s ease-in-out;
 }
-
 
 
        
@@ -212,8 +218,6 @@ function startVoiceRecognition() {
         // Ξεκινήστε νέα αναγνώριση μετά τη λήξη
         recognition.running = false;
         startVoiceRecognition();
-        microphoneIcon.classList.remove('microphone-on');
-        microphoneIcon.classList.add('microphone-off');
     };
 
     // Έναρξη της αναγνώρισης φωνής
@@ -224,6 +228,7 @@ function startVoiceRecognition() {
     microphoneIcon.classList.remove('microphone-off');
     microphoneIcon.classList.add('microphone-on');
 }
+
 
 
 
